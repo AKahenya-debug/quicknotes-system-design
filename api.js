@@ -91,6 +91,7 @@ const submitBtn = document.getElementById("submit-btn");
 let currentNotes = [];
 
 // Update displayNotes to remember the displayed notes
+
 function displayNotes(notes) {
     currentNotes = notes;
     notesList.innerHTML = "";
@@ -111,12 +112,22 @@ function displayNotes(notes) {
         const body = document.createElement("p");
         body.textContent = note.body;
 
+        // Create Delete button
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+
+        deleteBtn.addEventListener("click", () => {
+            deleteNote(note.id, li, deleteBtn);
+        });
+
         li.appendChild(title);
         li.appendChild(body);
+        li.appendChild(deleteBtn);
 
         notesList.appendChild(li);
     });
 }
+
 
 // POST request - Create a new note
 async function createNote(event) {
@@ -179,3 +190,36 @@ async function createNote(event) {
 
 // Listen for form submission
 noteForm.addEventListener("submit", createNote);
+
+
+// DELETE request - Remove a note
+async function deleteNote(id, noteElement, deleteBtn) {
+
+    deleteBtn.disabled = true;
+    showStatus("Deleting note...", "loading");
+
+    try {
+        const response = await request(`${API_URL}/${id}`, {
+            method: "DELETE"
+        });
+
+        // JSONPlaceholder simulates DELETE but does not permanently
+        // store or delete posts. We remove the note from our local UI.
+
+        currentNotes = currentNotes.filter(note => note.id !== id);
+
+        displayNotes(currentNotes);
+
+        showStatus(
+            `Note deleted successfully (status ${response.status}).`,
+            "success"
+        );
+
+    } catch (error) {
+        showStatus("Sorry, we could not delete the note. Please try again.", "error");
+        console.error(error);
+
+        deleteBtn.disabled = false;
+
+    }
+}
