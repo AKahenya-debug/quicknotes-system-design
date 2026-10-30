@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QuickNotes - Notes Manager</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="api.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <h1>QuickNotes</h1>
+      <p>Your simple online notes manager</p>
+    </header>
+
+    <main>
+      <section>
+        <h2>My Notes</h2>
+
+        <button id="load-btn">Load Notes</button>
+
+        <p id="status" aria-live="polite"></p>
+
+        <ul id="notes-list"></ul>
+      </section>
+
+      <section>
+        <h2>Create a New Note</h2>
+
+        <form id="note-form">
+          <label for="title-input">Note Title</label>
+          <input
+            type="text"
+            id="title-input"
+            placeholder="Enter note title"
+            maxlength="100"
+            required
+          />
+
+          <label for="body-input">Note Body</label>
+          <textarea
+            id="body-input"
+            placeholder="Write your note here..."
+          ></textarea>
+
+          <button type="submit" id="submit-btn">Create Note</button>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>
